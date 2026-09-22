@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AnimeVibe · discover anime</title>
-  <!-- Google Fonts & Font Awesome for clean typography & icons -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
@@ -26,7 +25,6 @@
       padding: 1.5rem 1rem;
     }
 
-    /* subtle gradient background */
     body::before {
       content: '';
       position: fixed;
@@ -50,7 +48,6 @@
       box-shadow: 0 20px 40px -12px rgba(0, 20, 50, 0.15), 0 4px 18px rgba(0, 0, 0, 0.02);
       padding: 2rem 2rem 2.5rem;
       border: 1px solid rgba(255, 255, 255, 0.7);
-      transition: box-shadow 0.3s ease;
     }
 
     /* ---------- typography ---------- */
@@ -160,7 +157,7 @@
       color: #5e4bdb;
     }
 
-    /* ---------- stats pill / filter row ---------- */
+    /* ---------- stats + filter ---------- */
     .stats-row {
       display: flex;
       align-items: center;
@@ -231,7 +228,7 @@
     /* ---------- anime grid ---------- */
     .anime-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
       gap: 1.75rem;
       margin-bottom: 2rem;
     }
@@ -245,7 +242,7 @@
       border: 1px solid rgba(255, 255, 255, 0.6);
       display: flex;
       flex-direction: column;
-      cursor: pointer;
+      cursor: default;
       animation: cardAppear 0.4s ease backwards;
     }
 
@@ -266,23 +263,20 @@
       }
     }
 
+    /* ----- card image with logo overlay ----- */
     .card-img {
       aspect-ratio: 3 / 4;
-      background: #eaeef9;
       position: relative;
       overflow: hidden;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: #6c6f8c;
-      font-size: 0.85rem;
-      font-weight: 500;
       background-size: cover;
       background-position: center;
       transition: transform 0.4s ease;
     }
 
-    /* we use a gradient background as fallback for images (since we have no real images) */
+    /* gradient fallbacks per anime */
     .card-img[data-color="0"] { background: linear-gradient(145deg, #cfd9ff, #b6c8ff); }
     .card-img[data-color="1"] { background: linear-gradient(145deg, #ffd6e7, #ffb8d4); }
     .card-img[data-color="2"] { background: linear-gradient(145deg, #c1e5d8, #a7d9c8); }
@@ -290,33 +284,74 @@
     .card-img[data-color="4"] { background: linear-gradient(145deg, #d3c4ff, #bfaaff); }
     .card-img[data-color="5"] { background: linear-gradient(145deg, #a9d8ff, #8fc9ff); }
 
-    /* add a subtle icon overlay to imply anime */
+    /* ----- LOGO (letter avatar + icon) ----- */
+    .anime-logo {
+      width: 86px;
+      height: 86px;
+      border-radius: 24px;
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 12px 28px -8px rgba(0, 0, 0, 0.2);
+      border: 2px solid rgba(255, 255, 255, 0.9);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      gap: 4px;
+      color: #2a2440;
+    }
+
+    .anime-card:hover .anime-logo {
+      transform: scale(1.05) rotate(2deg);
+      box-shadow: 0 18px 32px -8px rgba(94, 75, 219, 0.4);
+    }
+
+    .anime-logo .logo-initials {
+      font-size: 1.9rem;
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      background: linear-gradient(145deg, #3e2d7a, #6a5acd);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      line-height: 1;
+    }
+
+    .anime-logo .logo-icon {
+      font-size: 0.85rem;
+      color: #7c6ee6;
+      opacity: 0.9;
+    }
+
+    /* subtle film icon in corner */
     .card-img::after {
-      content: '\f1e0';  /* film icon */
+      content: '\f1e0';
       font-family: 'Font Awesome 6 Free';
       font-weight: 900;
-      font-size: 2.2rem;
-      color: rgba(255, 255, 255, 0.5);
-      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      transition: all 0.3s;
+      position: absolute;
+      bottom: 12px;
+      right: 14px;
+      font-size: 1.1rem;
+      color: rgba(255, 255, 255, 0.65);
+      text-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+      pointer-events: none;
     }
 
-    .anime-card:hover .card-img::after {
-      transform: scale(1.1);
-      color: rgba(255, 255, 255, 0.8);
-    }
-
+    /* ----- card info ----- */
     .card-info {
-      padding: 1.1rem 1rem 1.2rem;
+      padding: 1rem 0.9rem 1.1rem;
       display: flex;
       flex-direction: column;
       gap: 0.5rem;
       background: white;
+      flex: 1;
     }
 
     .card-title {
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: 1rem;
       line-height: 1.3;
       color: #121725;
       display: flex;
@@ -335,53 +370,137 @@
     .rating {
       background: #fff1d6;
       color: #b06b1a;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
       font-weight: 700;
-      padding: 0.2rem 0.55rem;
+      padding: 0.2rem 0.5rem;
       border-radius: 30px;
       display: flex;
       align-items: center;
       gap: 4px;
+      flex-shrink: 0;
     }
 
     .rating i {
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       color: #f5b342;
     }
 
     .meta {
       display: flex;
       justify-content: space-between;
-      font-size: 0.8rem;
+      font-size: 0.75rem;
       color: #6d738b;
       font-weight: 450;
-      margin-top: 0.1rem;
     }
 
     .meta i {
-      margin-right: 4px;
+      margin-right: 3px;
       color: #9a8fdb;
-      font-size: 0.7rem;
+      font-size: 0.65rem;
     }
 
     .tags {
       display: flex;
       gap: 0.4rem;
       flex-wrap: wrap;
-      margin-top: 0.2rem;
+      margin-top: 0.1rem;
     }
 
     .tag {
       background: #f0f3fd;
       border-radius: 30px;
-      padding: 0.2rem 0.7rem;
-      font-size: 0.7rem;
+      padding: 0.15rem 0.6rem;
+      font-size: 0.65rem;
       font-weight: 500;
       color: #4e4e6a;
-      letter-spacing: 0.01em;
     }
 
-    /* ---------- no results message ---------- */
+    /* ---------- ACTION BUTTONS ---------- */
+    .card-actions {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+      padding: 0.6rem 0.9rem 0.9rem;
+      background: white;
+      border-top: 1px solid #f0f2fa;
+      margin-top: auto;
+    }
+
+    .action-btn {
+      background: transparent;
+      border: 1.5px solid #e2e5f5;
+      border-radius: 40px;
+      padding: 0.4rem 0.8rem;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: #4f5570;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+      flex: 1;
+      justify-content: center;
+      background: #fafbff;
+    }
+
+    .action-btn i {
+      font-size: 0.8rem;
+      transition: transform 0.2s ease, color 0.2s ease;
+    }
+
+    .action-btn:hover {
+      border-color: #b7acff;
+      background: white;
+      color: #2e2650;
+      transform: translateY(-1px);
+      box-shadow: 0 4px 10px -4px rgba(94, 75, 219, 0.2);
+    }
+
+    .action-btn:hover i {
+      transform: scale(1.15);
+    }
+
+    /* active states */
+    .action-btn.liked {
+      background: #ffeef4;
+      border-color: #ffb8d4;
+      color: #c4457a;
+    }
+
+    .action-btn.liked i {
+      color: #ff4d8f;
+    }
+
+    .action-btn.watched {
+      background: #e9f6ef;
+      border-color: #a7d9c8;
+      color: #1f7a5c;
+    }
+
+    .action-btn.watched i {
+      color: #2eaf7d;
+    }
+
+    .action-btn.in-list {
+      background: #eae6ff;
+      border-color: #bfaaff;
+      color: #4a3f7a;
+    }
+
+    .action-btn.in-list i {
+      color: #5e4bdb;
+    }
+
+    /* tooltip-ish micro animation */
+    .action-btn:active {
+      transform: scale(0.95);
+    }
+
+    /* ---------- no results ---------- */
     .no-results {
       grid-column: 1 / -1;
       text-align: center;
@@ -440,12 +559,15 @@
       .top-bar { flex-direction: column; align-items: stretch; }
       .search-wrapper { min-width: 100%; }
       .stats-row { flex-direction: column; align-items: flex-start; }
-      .anime-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+      .anime-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 1rem; }
       .card-title span { max-width: 100px; }
+      .action-btn { font-size: 0.65rem; padding: 0.35rem 0.5rem; }
+      .action-btn i { font-size: 0.7rem; }
     }
 
-    @media (max-width: 380px) {
+    @media (max-width: 420px) {
       .anime-grid { grid-template-columns: 1fr; }
+      .card-title span { max-width: 160px; }
     }
   </style>
 </head>
@@ -503,20 +625,20 @@
 
   <script>
     (function() {
-      // ---------- ANIME DATASET ----------
+      // ---------- ANIME DATASET (with initials for logos) ----------
       const animeData = [
-        { id: 1, title: "Demon Slayer", genres: ["action", "fantasy"], rating: 4.8, episodes: 26, studio: "ufotable", color: 0 },
-        { id: 2, title: "Attack on Titan", genres: ["action", "fantasy"], rating: 4.9, episodes: 87, studio: "Wit/MAPPA", color: 1 },
-        { id: 3, title: "Fruits Basket", genres: ["romance", "fantasy"], rating: 4.7, episodes: 63, studio: "TMS", color: 2 },
-        { id: 4, title: "Steins;Gate", genres: ["sci-fi", "fantasy"], rating: 4.9, episodes: 24, studio: "White Fox", color: 3 },
-        { id: 5, title: "Jujutsu Kaisen", genres: ["action", "fantasy"], rating: 4.8, episodes: 47, studio: "MAPPA", color: 4 },
-        { id: 6, title: "Your Name", genres: ["romance", "fantasy"], rating: 4.9, episodes: 1, studio: "CoMix Wave", color: 5 },
-        { id: 7, title: "Cowboy Bebop", genres: ["sci-fi", "action"], rating: 4.8, episodes: 26, studio: "Sunrise", color: 0 },
-        { id: 8, title: "Spy x Family", genres: ["action", "romance"], rating: 4.7, episodes: 37, studio: "Wit/CloverWorks", color: 1 },
-        { id: 9, title: "Fullmetal Alchemist", genres: ["action", "fantasy"], rating: 4.9, episodes: 64, studio: "Bones", color: 2 },
-        { id: 10, title: "Violet Evergarden", genres: ["romance", "fantasy"], rating: 4.8, episodes: 13, studio: "Kyoto Animation", color: 3 },
-        { id: 11, title: "Cyberpunk: Edgerunners", genres: ["sci-fi", "action"], rating: 4.7, episodes: 10, studio: "Trigger", color: 4 },
-        { id: 12, title: "Horimiya", genres: ["romance", "action"], rating: 4.6, episodes: 13, studio: "CloverWorks", color: 5 }
+        { id: 1,  title: "Demon Slayer",          initials: "DS", genres: ["action", "fantasy"], rating: 4.8, episodes: 26, studio: "ufotable",        color: 0 },
+        { id: 2,  title: "Attack on Titan",        initials: "AoT", genres: ["action", "fantasy"], rating: 4.9, episodes: 87, studio: "Wit/MAPPA",      color: 1 },
+        { id: 3,  title: "Fruits Basket",          initials: "FB", genres: ["romance", "fantasy"], rating: 4.7, episodes: 63, studio: "TMS",            color: 2 },
+        { id: 4,  title: "Steins;Gate",            initials: "SG", genres: ["sci-fi", "fantasy"], rating: 4.9, episodes: 24, studio: "White Fox",      color: 3 },
+        { id: 5,  title: "Jujutsu Kaisen",         initials: "JJK", genres: ["action", "fantasy"], rating: 4.8, episodes: 47, studio: "MAPPA",          color: 4 },
+        { id: 6,  title: "Your Name",              initials: "YN", genres: ["romance", "fantasy"], rating: 4.9, episodes: 1,  studio: "CoMix Wave",     color: 5 },
+        { id: 7,  title: "Cowboy Bebop",           initials: "CB", genres: ["sci-fi", "action"], rating: 4.8, episodes: 26, studio: "Sunrise",        color: 0 },
+        { id: 8,  title: "Spy x Family",           initials: "SxF", genres: ["action", "romance"], rating: 4.7, episodes: 37, studio: "Wit/CloverWorks", color: 1 },
+        { id: 9,  title: "Fullmetal Alchemist",    initials: "FMA", genres: ["action", "fantasy"], rating: 4.9, episodes: 64, studio: "Bones",          color: 2 },
+        { id: 10, title: "Violet Evergarden",      initials: "VE", genres: ["romance", "fantasy"], rating: 4.8, episodes: 13, studio: "Kyoto Animation", color: 3 },
+        { id: 11, title: "Cyberpunk: Edgerunners", initials: "CP", genres: ["sci-fi", "action"], rating: 4.7, episodes: 10, studio: "Trigger",        color: 4 },
+        { id: 12, title: "Horimiya",               initials: "HM", genres: ["romance", "action"], rating: 4.6, episodes: 13, studio: "CloverWorks",    color: 5 }
       ];
 
       // ---------- DOM refs ----------
@@ -525,13 +647,18 @@
       const resultCountSpan = document.getElementById('resultCount');
       const filterChips = document.querySelectorAll('.chip');
 
-      // ---------- state ----------
+      // ---------- state for interactions ----------
+      const likedSet = new Set();       // store ids of liked anime
+      const watchedSet = new Set();     // store ids of watched anime
+      const listSet = new Set();        // store ids in "my list"
+
+      // current filter + search
       let currentFilter = 'all';
       let searchQuery = '';
 
       // ---------- render function ----------
       function renderAnimeList() {
-        // 1. filter by genre and search query
+        // filter by genre + search
         let filtered = animeData.filter(anime => {
           const matchesFilter = currentFilter === 'all' || anime.genres.includes(currentFilter);
           const query = searchQuery.trim().toLowerCase();
@@ -545,7 +672,7 @@
         // update count
         resultCountSpan.textContent = filtered.length;
 
-        // 2. build html
+        // no results view
         if (filtered.length === 0) {
           grid.innerHTML = `
             <div class="no-results">
@@ -557,18 +684,32 @@
           return;
         }
 
-        // generate cards
+        // build cards
         let cardsHtml = '';
         filtered.forEach((anime, index) => {
-          // get first two genres for display
           const displayGenres = anime.genres.slice(0, 2);
           const starRating = anime.rating.toFixed(1);
-          // animation delay for staggered entry
           const delay = (index * 0.03).toFixed(2);
+
+          // check interaction states
+          const isLiked = likedSet.has(anime.id) ? 'liked' : '';
+          const isWatched = watchedSet.has(anime.id) ? 'watched' : '';
+          const isInList = listSet.has(anime.id) ? 'in-list' : '';
+
+          // heart icon: solid if liked, regular otherwise
+          const heartIcon = likedSet.has(anime.id) ? 'fa-solid fa-heart' : 'fa-regular fa-heart';
+          const watchedIcon = watchedSet.has(anime.id) ? 'fa-solid fa-circle-check' : 'fa-regular fa-circle-check';
+          const listIcon = listSet.has(anime.id) ? 'fa-solid fa-bookmark' : 'fa-regular fa-bookmark';
 
           cardsHtml += `
             <div class="anime-card" data-id="${anime.id}" style="animation-delay: ${delay}s;">
-              <div class="card-img" data-color="${anime.color}"></div>
+              <div class="card-img" data-color="${anime.color}">
+                <!-- ANIME LOGO / AVATAR -->
+                <div class="anime-logo">
+                  <span class="logo-initials">${anime.initials}</span>
+                  <i class="fas fa-tv logo-icon"></i>
+                </div>
+              </div>
               <div class="card-info">
                 <div class="card-title">
                   <span>${anime.title}</span>
@@ -582,31 +723,95 @@
                   ${displayGenres.map(g => `<span class="tag">${g}</span>`).join('')}
                 </div>
               </div>
+              <!-- ACTION BUTTONS -->
+              <div class="card-actions">
+                <button class="action-btn like-btn ${isLiked}" data-id="${anime.id}" aria-label="Like">
+                  <i class="${heartIcon}"></i> Like
+                </button>
+                <button class="action-btn watch-btn ${isWatched}" data-id="${anime.id}" aria-label="Mark as watched">
+                  <i class="${watchedIcon}"></i> Watched
+                </button>
+                <button class="action-btn list-btn ${isInList}" data-id="${anime.id}" aria-label="Add to list">
+                  <i class="${listIcon}"></i> List
+                </button>
+              </div>
             </div>
           `;
         });
 
         grid.innerHTML = cardsHtml;
 
-        // 3. attach click interaction to cards (for demo interactivity)
+        // ---------- attach event listeners to new buttons ----------
+        document.querySelectorAll('.like-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = Number(btn.dataset.id);
+            const icon = btn.querySelector('i');
+            if (likedSet.has(id)) {
+              likedSet.delete(id);
+              btn.classList.remove('liked');
+              icon.className = 'fa-regular fa-heart';
+            } else {
+              likedSet.add(id);
+              btn.classList.add('liked');
+              icon.className = 'fa-solid fa-heart';
+            }
+            // micro feedback
+            btn.style.transform = 'scale(0.92)';
+            setTimeout(() => btn.style.transform = '', 150);
+          });
+        });
+
+        document.querySelectorAll('.watch-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = Number(btn.dataset.id);
+            const icon = btn.querySelector('i');
+            if (watchedSet.has(id)) {
+              watchedSet.delete(id);
+              btn.classList.remove('watched');
+              icon.className = 'fa-regular fa-circle-check';
+            } else {
+              watchedSet.add(id);
+              btn.classList.add('watched');
+              icon.className = 'fa-solid fa-circle-check';
+            }
+            btn.style.transform = 'scale(0.92)';
+            setTimeout(() => btn.style.transform = '', 150);
+          });
+        });
+
+        document.querySelectorAll('.list-btn').forEach(btn => {
+          btn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const id = Number(btn.dataset.id);
+            const icon = btn.querySelector('i');
+            if (listSet.has(id)) {
+              listSet.delete(id);
+              btn.classList.remove('in-list');
+              icon.className = 'fa-regular fa-bookmark';
+            } else {
+              listSet.add(id);
+              btn.classList.add('in-list');
+              icon.className = 'fa-solid fa-bookmark';
+            }
+            btn.style.transform = 'scale(0.92)';
+            setTimeout(() => btn.style.transform = '', 150);
+          });
+        });
+
+        // subtle card click (optional) — gives a tiny feedback
         document.querySelectorAll('.anime-card').forEach(card => {
           card.addEventListener('click', function(e) {
-            // no real navigation — we show a subtle feedback
+            // ignore if clicked on a button (buttons stopPropagation anyway, but extra safe)
+            if (e.target.closest('.action-btn')) return;
             const id = this.dataset.id;
             const anime = animeData.find(a => a.id == id);
             if (anime) {
-              // subtle pulse effect
               this.style.transition = 'transform 0.1s';
-              this.style.transform = 'scale(0.98)';
+              this.style.transform = 'scale(0.99)';
               setTimeout(() => {
                 this.style.transform = '';
-                // show a friendly toast-like effect (using console for simplicity, but could be a tooltip)
-                // but we'll add a tiny visual note on the card temporarily
-                const infoDiv = this.querySelector('.card-info');
-                const originalBg = infoDiv.style.background;
-                infoDiv.style.background = '#f0edff';
-                setTimeout(() => { infoDiv.style.background = originalBg; }, 150);
-                // scroll not needed, just a playful interaction
                 console.log(`✨ You clicked on "${anime.title}" — great choice!`);
               }, 120);
             }
@@ -614,8 +819,7 @@
         });
       }
 
-      // ---------- event listeners ----------
-      // search with debounce for smoothness
+      // ---------- event listeners (search & filter) ----------
       let searchTimeout;
       searchInput.addEventListener('input', (e) => {
         clearTimeout(searchTimeout);
@@ -625,14 +829,10 @@
         }, 200);
       });
 
-      // filter chips
       filterChips.forEach(chip => {
         chip.addEventListener('click', () => {
-          // update active class
           filterChips.forEach(c => c.classList.remove('active'));
           chip.classList.add('active');
-          
-          // set filter
           currentFilter = chip.dataset.filter;
           renderAnimeList();
         });
@@ -641,7 +841,7 @@
       // ---------- initial render ----------
       renderAnimeList();
 
-      // add a small extra interactive touch: keyboard shortcut for search
+      // keyboard shortcut hint
       document.addEventListener('keydown', (e) => {
         if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
           e.preventDefault();
@@ -649,8 +849,7 @@
         }
       });
 
-      // optional: add "press / to search" hint (just console)
-      console.log('💡 Tip: Press Ctrl/Cmd + K to quickly search anime');
+      console.log('💡 Tip: Press Ctrl/Cmd + K to quickly search anime. Click Like, Watched, or List to track your anime!');
     })();
   </script>
 </body>
