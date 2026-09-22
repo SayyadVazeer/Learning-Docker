@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AnimeVibe · discover anime</title>
+  <!-- Google Fonts & Font Awesome for clean typography & icons -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,400;14..32,500;14..32,600;14..32,700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    /* ---------- modern reset & base ---------- */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #f8faff;
+      color: #1a1e2b;
+      line-height: 1.5;
+      scroll-behavior: smooth;
+      padding: 1.5rem 1rem;
+    }
+
+    /* subtle gradient background */
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: radial-gradient(circle at 10% 20%, rgba(211, 226, 255, 0.4), transparent 40%),
+                  radial-gradient(circle at 90% 70%, rgba(255, 219, 235, 0.35), transparent 45%);
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .container {
+      max-width: 1280px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.75);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-radius: 36px;
+      box-shadow: 0 20px 40px -12px rgba(0, 20, 50, 0.15), 0 4px 18px rgba(0, 0, 0, 0.02);
+      padding: 2rem 2rem 2.5rem;
+      border: 1px solid rgba(255, 255, 255, 0.7);
+      transition: box-shadow 0.3s ease;
+    }
+
+    /* ---------- typography ---------- */
+    h1, h2, h3 {
+      font-weight: 600;
+      letter-spacing: -0.02em;
+    }
+
+    h1 {
+      font-size: 2.5rem;
+      background: linear-gradient(135deg, #1e2b4f, #4a3f7a);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      display: inline-block;
+    }
+
+    .subhead {
+      color: #4e5b7c;
+      font-size: 1.05rem;
+      font-weight: 400;
+      margin-top: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .subhead i {
+      color: #7c6ee6;
+      font-size: 0.9rem;
+    }
+
+    /* ---------- header / nav ---------- */
+    .top-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-icon {
+      background: linear-gradient(145deg, #5e4bdb, #9b8aff);
+      width: 48px;
+      height: 48px;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 1.8rem;
+      box-shadow: 0 8px 18px -6px #5e4bdb80;
+      transition: transform 0.2s ease;
+    }
+
+    .brand-icon:hover {
+      transform: scale(1.02) rotate(2deg);
+    }
+
+    .search-wrapper {
+      position: relative;
+      min-width: 280px;
+    }
+
+    .search-wrapper i {
+      position: absolute;
+      left: 18px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #8d93a8;
+      font-size: 1rem;
+      pointer-events: none;
+      transition: color 0.2s;
+    }
+
+    #searchInput {
+      width: 100%;
+      padding: 0.9rem 1rem 0.9rem 3rem;
+      border-radius: 60px;
+      border: 1.5px solid rgba(255, 255, 255, 0.9);
+      background: rgba(255, 255, 255, 0.7);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      font-size: 1rem;
+      font-weight: 450;
+      color: #1a1e2b;
+      outline: none;
+      transition: all 0.2s ease;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.02);
+    }
+
+    #searchInput:focus {
+      border-color: #a496ff;
+      background: white;
+      box-shadow: 0 10px 24px -8px rgba(94, 75, 219, 0.3);
+    }
+
+    #searchInput:focus + i {
+      color: #5e4bdb;
+    }
+
+    /* ---------- stats pill / filter row ---------- */
+    .stats-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 1rem 1.5rem;
+      margin-bottom: 2rem;
+    }
+
+    .count-badge {
+      background: #eae6ff;
+      border-radius: 40px;
+      padding: 0.5rem 1.2rem;
+      font-size: 0.9rem;
+      font-weight: 500;
+      color: #3b2f8a;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      border: 1px solid #d9d2ff;
+    }
+
+    .filter-chips {
+      display: flex;
+      gap: 0.6rem;
+      flex-wrap: wrap;
+    }
+
+    .chip {
+      background: rgba(255, 255, 255, 0.65);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(200, 200, 230, 0.7);
+      padding: 0.5rem 1rem;
+      border-radius: 40px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #363c56;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.02);
+    }
+
+    .chip i {
+      font-size: 0.75rem;
+      color: #7c6ee6;
+    }
+
+    .chip:hover {
+      background: white;
+      border-color: #b7acff;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 14px -6px rgba(94, 75, 219, 0.2);
+    }
+
+    .chip.active {
+      background: #1e1b3c;
+      border-color: #1e1b3c;
+      color: white;
+    }
+
+    .chip.active i {
+      color: white;
+    }
+
+    /* ---------- anime grid ---------- */
+    .anime-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      gap: 1.75rem;
+      margin-bottom: 2rem;
+    }
+
+    .anime-card {
+      background: white;
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: 0 8px 24px -8px rgba(0, 0, 0, 0.08);
+      transition: all 0.3s cubic-bezier(0.2, 0, 0, 1);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+      display: flex;
+      flex-direction: column;
+      cursor: pointer;
+      animation: cardAppear 0.4s ease backwards;
+    }
+
+    .anime-card:hover {
+      transform: translateY(-8px) scale(1.01);
+      box-shadow: 0 24px 36px -12px rgba(94, 75, 219, 0.25);
+      border-color: rgba(160, 140, 255, 0.4);
+    }
+
+    @keyframes cardAppear {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .card-img {
+      aspect-ratio: 3 / 4;
+      background: #eaeef9;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #6c6f8c;
+      font-size: 0.85rem;
+      font-weight: 500;
+      background-size: cover;
+      background-position: center;
+      transition: transform 0.4s ease;
+    }
+
+    /* we use a gradient background as fallback for images (since we have no real images) */
+    .card-img[data-color="0"] { background: linear-gradient(145deg, #cfd9ff, #b6c8ff); }
+    .card-img[data-color="1"] { background: linear-gradient(145deg, #ffd6e7, #ffb8d4); }
+    .card-img[data-color="2"] { background: linear-gradient(145deg, #c1e5d8, #a7d9c8); }
+    .card-img[data-color="3"] { background: linear-gradient(145deg, #fddfb5, #fdd39c); }
+    .card-img[data-color="4"] { background: linear-gradient(145deg, #d3c4ff, #bfaaff); }
+    .card-img[data-color="5"] { background: linear-gradient(145deg, #a9d8ff, #8fc9ff); }
+
+    /* add a subtle icon overlay to imply anime */
+    .card-img::after {
+      content: '\f1e0';  /* film icon */
+      font-family: 'Font Awesome 6 Free';
+      font-weight: 900;
+      font-size: 2.2rem;
+      color: rgba(255, 255, 255, 0.5);
+      text-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      transition: all 0.3s;
+    }
+
+    .anime-card:hover .card-img::after {
+      transform: scale(1.1);
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .card-info {
+      padding: 1.1rem 1rem 1.2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      background: white;
+    }
+
+    .card-title {
+      font-weight: 700;
+      font-size: 1.1rem;
+      line-height: 1.3;
+      color: #121725;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.5rem;
+    }
+
+    .card-title span {
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      max-width: 150px;
+    }
+
+    .rating {
+      background: #fff1d6;
+      color: #b06b1a;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 0.2rem 0.55rem;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    .rating i {
+      font-size: 0.65rem;
+      color: #f5b342;
+    }
+
+    .meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: #6d738b;
+      font-weight: 450;
+      margin-top: 0.1rem;
+    }
+
+    .meta i {
+      margin-right: 4px;
+      color: #9a8fdb;
+      font-size: 0.7rem;
+    }
+
+    .tags {
+      display: flex;
+      gap: 0.4rem;
+      flex-wrap: wrap;
+      margin-top: 0.2rem;
+    }
+
+    .tag {
+      background: #f0f3fd;
+      border-radius: 30px;
+      padding: 0.2rem 0.7rem;
+      font-size: 0.7rem;
+      font-weight: 500;
+      color: #4e4e6a;
+      letter-spacing: 0.01em;
+    }
+
+    /* ---------- no results message ---------- */
+    .no-results {
+      grid-column: 1 / -1;
+      text-align: center;
+      padding: 3.5rem 2rem;
+      background: rgba(255, 255, 255, 0.6);
+      border-radius: 36px;
+      border: 1px dashed #cbd0e6;
+      color: #575d7a;
+      font-weight: 500;
+      font-size: 1.1rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      backdrop-filter: blur(4px);
+    }
+
+    .no-results i {
+      font-size: 2.5rem;
+      color: #a8a0d4;
+      opacity: 0.7;
+    }
+
+    /* ---------- footer ---------- */
+    .footer {
+      margin-top: 1rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid rgba(200, 200, 230, 0.5);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.9rem;
+      color: #5c6280;
+    }
+
+    .social i {
+      font-size: 1.25rem;
+      margin-left: 1rem;
+      color: #8b81c7;
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .social i:hover {
+      color: #4a3f7a;
+      transform: scale(1.1);
+    }
+
+    /* ---------- responsive ---------- */
+    @media (max-width: 650px) {
+      body { padding: 1rem 0.75rem; }
+      .container { padding: 1.5rem 1rem; border-radius: 28px; }
+      h1 { font-size: 1.9rem; }
+      .top-bar { flex-direction: column; align-items: stretch; }
+      .search-wrapper { min-width: 100%; }
+      .stats-row { flex-direction: column; align-items: flex-start; }
+      .anime-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 1rem; }
+      .card-title span { max-width: 100px; }
+    }
+
+    @media (max-width: 380px) {
+      .anime-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <!-- header -->
+    <div class="top-bar">
+      <div class="brand">
+        <div class="brand-icon" aria-label="AnimeVibe logo">
+          <i class="fas fa-play"></i>
+        </div>
+        <div>
+          <h1>AnimeVibe</h1>
+          <div class="subhead">
+            <i class="fas fa-sparkles"></i> 
+            <span>curated anime universe</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="search-wrapper">
+        <i class="fas fa-search"></i>
+        <input type="text" id="searchInput" placeholder="Search anime, genre, studio..." aria-label="Search anime">
+      </div>
+    </div>
+
+    <!-- stats + filters -->
+    <div class="stats-row">
+      <div class="count-badge">
+        <i class="fas fa-tv"></i>
+        <span id="resultCount">12</span> titles found
+      </div>
+      <div class="filter-chips" id="filterChips">
+        <div class="chip active" data-filter="all"><i class="fas fa-compass"></i> All</div>
+        <div class="chip" data-filter="action"><i class="fas fa-bolt"></i> Action</div>
+        <div class="chip" data-filter="fantasy"><i class="fas fa-hat-wizard"></i> Fantasy</div>
+        <div class="chip" data-filter="romance"><i class="fas fa-heart"></i> Romance</div>
+        <div class="chip" data-filter="sci-fi"><i class="fas fa-rocket"></i> Sci-Fi</div>
+      </div>
+    </div>
+
+    <!-- anime grid -->
+    <div class="anime-grid" id="animeGrid"></div>
+
+    <!-- footer -->
+    <div class="footer">
+      <div>© 2025 AnimeVibe — discover your next favorite</div>
+      <div class="social">
+        <i class="fab fa-twitter" aria-label="Twitter"></i>
+        <i class="fab fa-discord" aria-label="Discord"></i>
+        <i class="fab fa-github" aria-label="GitHub"></i>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function() {
+      // ---------- ANIME DATASET ----------
+      const animeData = [
+        { id: 1, title: "Demon Slayer", genres: ["action", "fantasy"], rating: 4.8, episodes: 26, studio: "ufotable", color: 0 },
+        { id: 2, title: "Attack on Titan", genres: ["action", "fantasy"], rating: 4.9, episodes: 87, studio: "Wit/MAPPA", color: 1 },
+        { id: 3, title: "Fruits Basket", genres: ["romance", "fantasy"], rating: 4.7, episodes: 63, studio: "TMS", color: 2 },
+        { id: 4, title: "Steins;Gate", genres: ["sci-fi", "fantasy"], rating: 4.9, episodes: 24, studio: "White Fox", color: 3 },
+        { id: 5, title: "Jujutsu Kaisen", genres: ["action", "fantasy"], rating: 4.8, episodes: 47, studio: "MAPPA", color: 4 },
+        { id: 6, title: "Your Name", genres: ["romance", "fantasy"], rating: 4.9, episodes: 1, studio: "CoMix Wave", color: 5 },
+        { id: 7, title: "Cowboy Bebop", genres: ["sci-fi", "action"], rating: 4.8, episodes: 26, studio: "Sunrise", color: 0 },
+        { id: 8, title: "Spy x Family", genres: ["action", "romance"], rating: 4.7, episodes: 37, studio: "Wit/CloverWorks", color: 1 },
+        { id: 9, title: "Fullmetal Alchemist", genres: ["action", "fantasy"], rating: 4.9, episodes: 64, studio: "Bones", color: 2 },
+        { id: 10, title: "Violet Evergarden", genres: ["romance", "fantasy"], rating: 4.8, episodes: 13, studio: "Kyoto Animation", color: 3 },
+        { id: 11, title: "Cyberpunk: Edgerunners", genres: ["sci-fi", "action"], rating: 4.7, episodes: 10, studio: "Trigger", color: 4 },
+        { id: 12, title: "Horimiya", genres: ["romance", "action"], rating: 4.6, episodes: 13, studio: "CloverWorks", color: 5 }
+      ];
+
+      // ---------- DOM refs ----------
+      const grid = document.getElementById('animeGrid');
+      const searchInput = document.getElementById('searchInput');
+      const resultCountSpan = document.getElementById('resultCount');
+      const filterChips = document.querySelectorAll('.chip');
+
+      // ---------- state ----------
+      let currentFilter = 'all';
+      let searchQuery = '';
+
+      // ---------- render function ----------
+      function renderAnimeList() {
+        // 1. filter by genre and search query
+        let filtered = animeData.filter(anime => {
+          const matchesFilter = currentFilter === 'all' || anime.genres.includes(currentFilter);
+          const query = searchQuery.trim().toLowerCase();
+          const matchesSearch = query === '' || 
+            anime.title.toLowerCase().includes(query) ||
+            anime.studio.toLowerCase().includes(query) ||
+            anime.genres.some(g => g.toLowerCase().includes(query));
+          return matchesFilter && matchesSearch;
+        });
+
+        // update count
+        resultCountSpan.textContent = filtered.length;
+
+        // 2. build html
+        if (filtered.length === 0) {
+          grid.innerHTML = `
+            <div class="no-results">
+              <i class="fas fa-search-minus"></i>
+              <div>No anime found matching your criteria</div>
+              <div style="font-size:0.9rem; opacity:0.7;">Try a different keyword or filter</div>
+            </div>
+          `;
+          return;
+        }
+
+        // generate cards
+        let cardsHtml = '';
+        filtered.forEach((anime, index) => {
+          // get first two genres for display
+          const displayGenres = anime.genres.slice(0, 2);
+          const starRating = anime.rating.toFixed(1);
+          // animation delay for staggered entry
+          const delay = (index * 0.03).toFixed(2);
+
+          cardsHtml += `
+            <div class="anime-card" data-id="${anime.id}" style="animation-delay: ${delay}s;">
+              <div class="card-img" data-color="${anime.color}"></div>
+              <div class="card-info">
+                <div class="card-title">
+                  <span>${anime.title}</span>
+                  <div class="rating"><i class="fas fa-star"></i> ${starRating}</div>
+                </div>
+                <div class="meta">
+                  <span><i class="fas fa-film"></i> ${anime.episodes} ep</span>
+                  <span><i class="fas fa-building"></i> ${anime.studio}</span>
+                </div>
+                <div class="tags">
+                  ${displayGenres.map(g => `<span class="tag">${g}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+          `;
+        });
+
+        grid.innerHTML = cardsHtml;
+
+        // 3. attach click interaction to cards (for demo interactivity)
+        document.querySelectorAll('.anime-card').forEach(card => {
+          card.addEventListener('click', function(e) {
+            // no real navigation — we show a subtle feedback
+            const id = this.dataset.id;
+            const anime = animeData.find(a => a.id == id);
+            if (anime) {
+              // subtle pulse effect
+              this.style.transition = 'transform 0.1s';
+              this.style.transform = 'scale(0.98)';
+              setTimeout(() => {
+                this.style.transform = '';
+                // show a friendly toast-like effect (using console for simplicity, but could be a tooltip)
+                // but we'll add a tiny visual note on the card temporarily
+                const infoDiv = this.querySelector('.card-info');
+                const originalBg = infoDiv.style.background;
+                infoDiv.style.background = '#f0edff';
+                setTimeout(() => { infoDiv.style.background = originalBg; }, 150);
+                // scroll not needed, just a playful interaction
+                console.log(`✨ You clicked on "${anime.title}" — great choice!`);
+              }, 120);
+            }
+          });
+        });
+      }
+
+      // ---------- event listeners ----------
+      // search with debounce for smoothness
+      let searchTimeout;
+      searchInput.addEventListener('input', (e) => {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(() => {
+          searchQuery = e.target.value;
+          renderAnimeList();
+        }, 200);
+      });
+
+      // filter chips
+      filterChips.forEach(chip => {
+        chip.addEventListener('click', () => {
+          // update active class
+          filterChips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+          
+          // set filter
+          currentFilter = chip.dataset.filter;
+          renderAnimeList();
+        });
+      });
+
+      // ---------- initial render ----------
+      renderAnimeList();
+
+      // add a small extra interactive touch: keyboard shortcut for search
+      document.addEventListener('keydown', (e) => {
+        if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+          e.preventDefault();
+          searchInput.focus();
+        }
+      });
+
+      // optional: add "press / to search" hint (just console)
+      console.log('💡 Tip: Press Ctrl/Cmd + K to quickly search anime');
+    })();
+  </script>
+</body>
+</html>
